@@ -33,4 +33,17 @@ Dieses Repository enthält das vollständige Projekt von *LuxHunt*, bestehend au
 
 ---
 
+## 🧠 Kontext für GitHub Copilot / Codespace
+
+Bitte berücksichtige folgende Anforderungen beim Refactoring oder beim Hinzufügen neuer Services:
+
+- Zertifikate befinden sich in: /root/ssl/luxhunt/
+- Docker-Socket via: /var/run/docker.sock
+- TLS-Konfiguration erfolgt manuell, kein Let's Encrypt
+- Subdomain-Routing via Traefik für:
+  - luxhunt.de (Mainpage)
+  - watchhunter.luxhunt.de (Bot-API)
+- Ziel: Deployment auf DigitalOcean mit robustem Reverse Proxy & Port-Kompatibilität
+- Framework: Next.js (Frontend), Playwright (Bots), Docker, Traefik
+
 Created: 06.06.2025
