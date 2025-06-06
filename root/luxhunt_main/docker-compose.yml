@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  mainpage:
+    container_name: luxhunt-mainpage
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - luxhunt_main_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.luxhunt-mainpage.rule=Host(luxhunt.de)"
+      - "traefik.http.routers.luxhunt-mainpage.entrypoints=websecure"
+      - "traefik.http.routers.luxhunt-mainpage.tls=true"
+      - "traefik.http.services.luxhunt-mainpage.loadbalancer.server.port=3000"
+
+networks:
+  luxhunt_main_net:
+    external: true
