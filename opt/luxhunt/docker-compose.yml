@@ -1,0 +1,37 @@
+version: "3.8"
+
+networks:
+  luxnet:
+    driver: bridge
+
+services:
+  traefik-mainpage:
+    image: traefik:v2.10
+    container_name: traefik-mainpage
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    command:
+      - "--providers.docker=true"
+      - "--providers.file.filename=/etc/traefik/traefik.yml"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - /root/ssl/luxhunt/:/certs:ro
+    networks:
+      - luxnet
+
+  luxhunt-mainpage:
+    image: luxhunt_main_mainpage:latest
+    container_name: luxhunt-mainpage
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mainpage.rule=Host(luxhunt.de)"
+      - "traefik.http.routers.mainpage.entrypoints=websecure"
+      - "traefik.http.routers.mainpage.tls=true"
+    networks:
+      - luxnet

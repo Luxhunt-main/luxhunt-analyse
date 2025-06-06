@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /root/traefik.yml:/traefik.yml:ro
+      - /root/acme:/acme
+    labels:
+      - "traefik.enable=true"
+    networks:
+      - web
+
+  frontend:
+    image: luxhunt/luxhunt-frontend:latest
+    container_name: watchhunter-frontend
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(watchhunter.luxhunt.ai)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+    networks:
+      - web
+
+  api:
+    image: luxhunt/luxhunt-api:latest
+    container_name: watchhunter-api
+    restart: always
+    ports:
+      - "3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=PathPrefix(/api)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

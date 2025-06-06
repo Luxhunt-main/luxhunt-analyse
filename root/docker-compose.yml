@@ -1,0 +1,19 @@
+frontend:
+  image: luxhunt/frontend:latest
+  container_name: watchhunter-frontend
+  restart: always
+  labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.frontend.rule=Host(luxhunt.de, www.luxhunt.de)"
+    - "traefik.http.routers.frontend.entrypoints=websecure"
+    - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+
+api:
+  image: luxhunt/api:latest
+  container_name: watchhunter-api
+  restart: always
+  labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.api.rule=Host(api.luxhunt.de)"
+    - "traefik.http.routers.api.entrypoints=websecure"
+    - "traefik.http.routers.api.tls.certresolver=letsencrypt"

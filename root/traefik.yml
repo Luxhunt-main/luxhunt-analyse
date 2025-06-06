@@ -1,0 +1,19 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: ballwanz@ymail.com
+      storage: /root/acme/acme.json
+      httpChallenge:
+        entryPoint: web
+
+api:
+  dashboard: true
+
+log:
+  level: DEBUG

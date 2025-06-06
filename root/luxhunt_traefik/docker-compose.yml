@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  traefik-mainpage:
+    image: traefik:v2.10
+    container_name: traefik-mainpage
+    command:
+      - "--providers.file.filename=/etc/traefik/traefik.yml"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /root/luxhunt_traefik/traefik.yml:/etc/traefik/traefik.yml
+      - /root/luxhunt_traefik/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/ssl/luxhunt:/certs
+    extra_hosts:
+      - "luxhunt.de:164.92.166.12"
+      - "www.luxhunt.de:164.92.166.12"
+    networks:
+      - luxhunt_main_net
+
+networks:
+  luxhunt_main_net:
+    external: true

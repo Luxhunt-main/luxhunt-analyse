@@ -1,0 +1,15 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+
+tls:
+  certificates:
+    - certFile: "/certs/luxhunt.crt"
+      keyFile: "/certs/luxhunt.key"

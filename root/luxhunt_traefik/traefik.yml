@@ -1,0 +1,15 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    filename: /etc/traefik/traefik.yml
+  docker:
+    exposedByDefault: false
+tls:
+  certificates:
+    - certFile: /certs/luxhunt.crt
+      keyFile: /certs/luxhunt.de.key
